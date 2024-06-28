@@ -97,7 +97,7 @@ def start_scraper():
               # Extraire le lien du fichier à télécharger
               all_h2 = element_to_download.find_all('h2')
               first_link = all_h2[0].find('a')
-              link_library_to_download = first_link.get('href')
+              link_library_to_download = clean_filename(first_link.get('href'))
               try:
                 filename = unquote(link_library_to_download.split('/')[-1]) 
                 cleaned_filename = clean_filename(filename)
