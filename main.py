@@ -5,6 +5,7 @@ import uvicorn
 import os
 from urllib.parse import unquote
 import wget
+import threading
 
 
 from fastapi import FastAPI
@@ -21,6 +22,17 @@ base_url = "http://library.lol/"
 list_downloaded_library = []
 
 list_download_error = []
+
+
+# Function to download a file
+def download_file(link, save_path):
+    try:
+        wget.download(link, save_path)
+        print(f"Downloaded: {save_path}")
+        return True
+    except Exception as e:
+        print(f"Error downloading {link}: {e}")
+        return False
 
 
 
@@ -88,7 +100,9 @@ def start_scraper():
                 if os.path.exists(save_path):
                     continue
                 # Download file using wget
-                wget.download(link_library_to_download, save_path)
+                 # Download file using threading
+                thread = threading.Thread(target=download_file, args=(link_library_to_download, save_path))
+                thread.start()
                 # with requests.get(link_library_to_download, stream=True) as response_download_file:
                 #     response_download_file.raise_for_status()
                 #     with open(save_path, 'wb') as f:
