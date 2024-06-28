@@ -133,7 +133,7 @@ def start_scraper():
       print(f"downloaded {nbr_downloaded}")
   df_downloaded = pd.DataFrame(list_downloaded_library)
 
-  df_downloaded_error = pd.DataFrame(list_downloaded_library_error)
+  df_downloaded_error = pd.DataFrame(list_download_error)
 
 
   excel_filename = 'french_library_data.xlsx'
