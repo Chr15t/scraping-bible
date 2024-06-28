@@ -5,7 +5,6 @@ import uvicorn
 import os
 from urllib.parse import unquote
 import wget
-import re
 import threading
 
 
@@ -25,20 +24,6 @@ list_downloaded_library = []
 list_download_error = []
 
 
-# Function to download a file
-def download_file(link, save_path):
-    try:
-        wget.download(link, save_path)
-        print(f"Downloaded: {save_path}")
-        return True
-    except Exception as e:
-        print(f"Error downloading {link}: {e}")
-        return False
-
-def clean_filename(filename):
-    # Remove special characters from end of filename
-    cleaned_filename = re.sub(r'[^\w\s-]', '', filename).strip()
-    return cleaned_filename
 
 
 @app.get("/")
@@ -97,17 +82,14 @@ def start_scraper():
               # Extraire le lien du fichier à télécharger
               all_h2 = element_to_download.find_all('h2')
               first_link = all_h2[0].find('a')
-              link_library_to_download = clean_filename(first_link.get('href'))
+              link_library_to_download = first_link.get('href')
               try:
                 filename = unquote(link_library_to_download.split('/')[-1]) 
-                cleaned_filename = clean_filename(filename)
-                save_path = f"french/{cleaned_filename}"
+                save_path = f"french/{filename}"
                 if os.path.exists(save_path):
                     continue
                 # Download file using wget
-                 # Download file using threading
-                thread = threading.Thread(target=download_file, args=(link_library_to_download, save_path))
-                thread.start()
+                wget.download(link_library_to_download, save_path)
                 # with requests.get(link_library_to_download, stream=True) as response_download_file:
                 #     response_download_file.raise_for_status()
                 #     with open(save_path, 'wb') as f:
