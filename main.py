@@ -4,6 +4,7 @@ import pandas as pd
 import uvicorn
 import os
 from urllib.parse import unquote
+import wget
 
 
 from fastapi import FastAPI
@@ -86,11 +87,13 @@ def start_scraper():
                 save_path = f"french/{filename}"
                 if os.path.exists(save_path):
                     continue
-                with requests.get(link_library_to_download, stream=True) as response_download_file:
-                    response_download_file.raise_for_status()
-                    with open(save_path, 'wb') as f:
-                        for chunk in response_download_file.iter_content(chunk_size=8192):
-                            f.write(chunk)
+                # Download file using wget
+                wget.download(link_library_to_download, save_path)
+                # with requests.get(link_library_to_download, stream=True) as response_download_file:
+                #     response_download_file.raise_for_status()
+                #     with open(save_path, 'wb') as f:
+                #         for chunk in response_download_file.iter_content(chunk_size=8192):
+                #             f.write(chunk)
                 print(f"-Downloaded \"{links.text}\"\t-laguage=\"{lang.text}\" \t-taille: \"{taille.text}\"\t-link: \"{link_library_to_download}\"")
                 list_downloaded_library.append({
                     'title': row[0],
