@@ -34,7 +34,10 @@ def download_file(link, save_path):
         print(f"Error downloading {link}: {e}")
         return False
 
-
+def clean_filename(filename):
+    # Remove special characters from end of filename
+    cleaned_filename = re.sub(r'[^\w\s-]', '', filename).strip()
+    return cleaned_filename
 
 
 @app.get("/")
@@ -96,7 +99,8 @@ def start_scraper():
               link_library_to_download = first_link.get('href')
               try:
                 filename = unquote(link_library_to_download.split('/')[-1]) 
-                save_path = f"french/{filename}"
+                cleaned_filename = clean_filename(filename)
+                save_path = f"french/{cleaned_filename}"
                 if os.path.exists(save_path):
                     continue
                 # Download file using wget
