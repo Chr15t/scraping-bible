@@ -34,7 +34,7 @@ def read_root():
 def start_scraper():
   print("\n----------------------------------------------------------------")
   # print("Starting scraper.")
-  df_fr = pd.read_csv('output_all_fr.csv', header=None)
+  df_fr = pd.read_csv('output_all_en.csv', header=None)
   df_header = df_fr
   for index, row in df_header.iterrows():
     print(f"-----> {row[0]}")
@@ -85,7 +85,7 @@ def start_scraper():
               link_library_to_download = first_link.get('href')
               try:
                 filename = unquote(link_library_to_download.split('/')[-1]) 
-                save_path = f"french/{filename}"
+                save_path = f"english/{filename}"
                 if os.path.exists(save_path):
                     continue
                 # Download file using wget
@@ -123,10 +123,10 @@ def start_scraper():
   df_downloaded_error = pd.DataFrame(list_download_error)
 
 
-  excel_filename = 'french_library_data.xlsx'
+  excel_filename = 'english_library_data.xlsx'
   df_downloaded.to_excel(excel_filename, index=False)
 
-  df_downloaded_error.to_csv('french_error_library.csv')
+  df_downloaded_error.to_csv('english_error_library.csv')
 
         
   print("----------------------------------------------------------------\n")
