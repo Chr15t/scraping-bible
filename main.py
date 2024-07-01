@@ -104,14 +104,14 @@ def start_scraper():
                       for chunk in tqdm(response_download.iter_content(chunk_size=8192), total=total_size, unit='B', unit_scale=True):
                           if chunk:
                               file_down.write(chunk)
-                      print(f"-Downloaded \"{links.text}\"\t-laguage=\"{lang.text}\" \t-taille: \"{taille.text}\"\t-link: \"{link_library_to_download}\"")
-                      list_downloaded_library.append({
-                          'title': row[0],
-                          'links': link_library_to_download,
-                          'size': taille.text,
-                          'language': lang.text,
-                      })
-                      nbr_downloaded = nbr_downloaded + 1
+                  print(f"-Downloaded \"{links.text}\"\t-laguage=\"{lang.text}\" \t-taille: \"{taille.text}\"\t-link: \"{link_library_to_download}\"")
+                  list_downloaded_library.append({
+                      'title': row[0],
+                      'links': link_library_to_download,
+                      'size': taille.text,
+                      'language': lang.text,
+                  })
+                  nbr_downloaded = nbr_downloaded + 1
               except:
                 print(f"error")
                 print(f"Error downloading {link_library_to_download}")
