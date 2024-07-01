@@ -95,23 +95,23 @@ def start_scraper():
                 if os.path.exists(save_path):
                     continue
                 # Download file using wget
-                # wget.download(link_library_to_download, save_path)
-                with requests.get(link_library_to_download, stream=True) as response_download:
-                  response_download.raise_for_status()
-                  total_size = int(response_download.headers.get('content-length', 0))
+                wget.download(link_library_to_download, out=save_path, bar=tqdm.bar_format(tqdm.desc, tqdm.eta))
+                # with requests.get(link_library_to_download, stream=True) as response_download:
+                #   response_download.raise_for_status()
+                #   total_size = int(response_download.headers.get('content-length', 0))
 
-                  with open(save_path, 'wb') as file_down:
-                      for chunk in tqdm(response_download.iter_content(chunk_size=8192), total=total_size, unit='B', unit_scale=True):
-                          if chunk:
-                              file_down.write(chunk)
-                  print(f"-Downloaded \"{links.text}\"\t-laguage=\"{lang.text}\" \t-taille: \"{taille.text}\"\t-link: \"{link_library_to_download}\"")
-                  list_downloaded_library.append({
+                #   with open(save_path, 'wb') as file_down:
+                #       for chunk in tqdm(response_download.iter_content(chunk_size=8192), total=total_size, unit='B', unit_scale=True):
+                #           if chunk:
+                #               file_down.write(chunk)
+                print(f"-Downloaded \"{links.text}\"\t-laguage=\"{lang.text}\" \t-taille: \"{taille.text}\"\t-link: \"{link_library_to_download}\"")
+                list_downloaded_library.append({
                       'title': row[0],
                       'links': link_library_to_download,
                       'size': taille.text,
                       'language': lang.text,
                   })
-                  nbr_downloaded = nbr_downloaded + 1
+                nbr_downloaded = nbr_downloaded + 1
               except:
                 print(f"error")
                 print(f"Error downloading {link_library_to_download}")
