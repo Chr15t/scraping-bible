@@ -96,13 +96,14 @@ def start_scraper():
                     continue
                 # Download file using wget
                 # wget.download(link_library_to_download, save_path)
-                respponse_download = requests.get(link_library_to_download, stream=True)
-                if respponse_download.status_code == 200:
-                    total_size = int(response_download.headers.get('content-length', 0))
-                    with open(save_path, 'wb') as file_down:
-                        for chunk in tqdm(response_download.iter_content(chunk_size=8192), total=total_size, unit='B', unit_scale=True):
-                            if chunk:
-                                file_down.write(chunk)
+                with requests.get(link_library_to_download, stream=True) as response_download:
+                response_download.raise_for_status()
+                total_size = int(response_download.headers.get('content-length', 0))
+
+                with open(save_path, 'wb') as file_down:
+                    for chunk in tqdm(response_download.iter_content(chunk_size=8192), total=total_size, unit='B', unit_scale=True):
+                        if chunk:
+                            file_down.write(chunk)
                     print(f"-Downloaded \"{links.text}\"\t-laguage=\"{lang.text}\" \t-taille: \"{taille.text}\"\t-link: \"{link_library_to_download}\"")
                     list_downloaded_library.append({
                         'title': row[0],
