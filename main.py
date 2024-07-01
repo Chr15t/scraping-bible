@@ -4,6 +4,7 @@ import pandas as pd
 import uvicorn
 import os
 from urllib.parse import unquote
+from tqdm import tqdm
 import wget
 import threading
 
@@ -97,9 +98,11 @@ def start_scraper():
                 # wget.download(link_library_to_download, save_path)
                 respponse_download = requests.get(link_library_to_download, stream=True)
                 if respponse_download.status_code == 200:
-                    with open(save_path, 'wb') as fiile_down:
-                        for chunk in respponse_download.iter_content(chunk_size=8192):
-                            fiile_down.write(chunk)
+                    total_size = int(response_download.headers.get('content-length', 0))
+                    with open(save_path, 'wb') as file_down:
+                        for chunk in tqdm(response_download.iter_content(chunk_size=8192), total=total_size, unit='B', unit_scale=True):
+                            if chunk:
+                                file_down.write(chunk)
                     print(f"-Downloaded \"{links.text}\"\t-laguage=\"{lang.text}\" \t-taille: \"{taille.text}\"\t-link: \"{link_library_to_download}\"")
                     list_downloaded_library.append({
                         'title': row[0],
