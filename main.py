@@ -95,7 +95,7 @@ def start_scraper():
                 if os.path.exists(save_path):
                     continue
                 # Download file using wget
-                wget.download(link_library_to_download, out=save_path, bar=tqdm)
+                wget.download(link_library_to_download, out=save_path)
                 # with requests.get(link_library_to_download, stream=True) as response_download:
                 #   response_download.raise_for_status()
                 #   total_size = int(response_download.headers.get('content-length', 0))
