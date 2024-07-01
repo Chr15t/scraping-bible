@@ -80,8 +80,13 @@ def start_scraper():
             element_to_download = soup_downloaded.find(id='download')
             if element_to_download:
               # Extraire le lien du fichier à télécharger
-              all_h2 = element_to_download.find_all('h2')
-              first_link = all_h2[0].find('a')
+              all_ul = element_to_download.find_all('ul')
+              all_li = element_to_download.find_all('li')
+
+
+
+              # all_h2 = element_to_download.find_all('h2')
+              first_link = all_li[1].find('a')
               link_library_to_download = first_link.get('href')
               try:
                 filename = unquote(link_library_to_download.split('/')[-1]) 
@@ -90,11 +95,6 @@ def start_scraper():
                     continue
                 # Download file using wget
                 wget.download(link_library_to_download, save_path)
-                # with requests.get(link_library_to_download, stream=True) as response_download_file:
-                #     response_download_file.raise_for_status()
-                #     with open(save_path, 'wb') as f:
-                #         for chunk in response_download_file.iter_content(chunk_size=8192):
-                #             f.write(chunk)
                 print(f"-Downloaded \"{links.text}\"\t-laguage=\"{lang.text}\" \t-taille: \"{taille.text}\"\t-link: \"{link_library_to_download}\"")
                 list_downloaded_library.append({
                     'title': row[0],
