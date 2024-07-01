@@ -112,8 +112,8 @@ def start_scraper():
                       'language': lang.text,
                   })
                 nbr_downloaded = nbr_downloaded + 1
-              except:
-                print(f"error")
+              except Exception as e:
+                print(f"error {e}")
                 print(f"Error downloading {link_library_to_download}")
                 list_download_error.append({
                     'title': row[0],
