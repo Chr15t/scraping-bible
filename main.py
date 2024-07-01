@@ -81,13 +81,13 @@ def start_scraper():
             element_to_download = soup_downloaded.find(id='download')
             if element_to_download:
               # Extraire le lien du fichier à télécharger
-              all_ul = element_to_download.find_all('ul')
-              all_li = element_to_download.find_all('li')
+              # all_ul = element_to_download.find_all('ul')
+              # all_li = element_to_download.find_all('li')
 
 
 
-              # all_h2 = element_to_download.find_all('h2')
-              first_link = all_li[1].find('a')
+              all_h2 = element_to_download.find_all('h2')
+              first_link = all_h2[0].find('a')
               link_library_to_download = first_link.get('href')
               try:
                 filename = unquote(link_library_to_download.split('/')[-1]) 
