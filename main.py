@@ -94,15 +94,20 @@ def start_scraper():
                 if os.path.exists(save_path):
                     continue
                 # Download file using wget
-                wget.download(link_library_to_download, save_path)
-                print(f"-Downloaded \"{links.text}\"\t-laguage=\"{lang.text}\" \t-taille: \"{taille.text}\"\t-link: \"{link_library_to_download}\"")
-                list_downloaded_library.append({
-                    'title': row[0],
-                    'links': link_library_to_download,
-                    'size': taille.text,
-                    'language': lang.text,
-                })
-                nbr_downloaded = nbr_downloaded + 1
+                # wget.download(link_library_to_download, save_path)
+                respponse_download = requests.get(link_library_to_download, stream=True)
+                if respponse_download.status_code == 200:
+                    with open(save_path, 'wb') as fiile_down:
+                        for chunk in respponse_download.iter_content(chunk_size=8192):
+                            fiile_down.write(chunk)
+                    print(f"-Downloaded \"{links.text}\"\t-laguage=\"{lang.text}\" \t-taille: \"{taille.text}\"\t-link: \"{link_library_to_download}\"")
+                    list_downloaded_library.append({
+                        'title': row[0],
+                        'links': link_library_to_download,
+                        'size': taille.text,
+                        'language': lang.text,
+                    })
+                    nbr_downloaded = nbr_downloaded + 1
               except:
                 print(f"error")
                 print(f"Error downloading {link_library_to_download}")
